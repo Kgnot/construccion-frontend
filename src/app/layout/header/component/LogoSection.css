@@ -1,0 +1,11 @@
+.logo-section-root {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-section-root span {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #222;
+}

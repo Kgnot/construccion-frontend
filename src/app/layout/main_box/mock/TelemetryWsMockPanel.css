@@ -1,0 +1,213 @@
+.telemetry-mock {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  color: #111827;
+}
+
+.telemetry-mock__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.telemetry-mock__header h2 {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+}
+
+.telemetry-mock__header p {
+  margin: 0;
+  color: #475569;
+}
+
+.telemetry-mock__status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.telemetry-mock__status .is-ok,
+.telemetry-mock__status .is-off {
+  font-size: 0.85rem;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.telemetry-mock__status .is-ok {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.telemetry-mock__status .is-off {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.telemetry-mock button {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.telemetry-mock button:hover {
+  background: #f8fafc;
+}
+
+.telemetry-mock__controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.telemetry-mock__controls label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #334155;
+}
+
+.telemetry-mock input,
+.telemetry-mock select {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px;
+  background: #fff;
+}
+
+.telemetry-mock__subscriptions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.telemetry-subscription-card {
+  border: 1px solid #dbeafe;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.telemetry-subscription-card h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.telemetry-subscription-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #334155;
+  word-break: break-word;
+}
+
+.toggle-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.telemetry-mock__latest h3,
+.telemetry-mock__feed h3 {
+  margin: 0 0 8px;
+}
+
+.telemetry-latest-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.latest-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px;
+  background: #fff;
+}
+
+.latest-card h4 {
+  margin: 0 0 8px;
+}
+
+.latest-card p {
+  margin: 4px 0;
+  font-size: 0.85rem;
+}
+
+.latest-card pre {
+  margin: 8px 0 0;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 10px;
+  font-size: 0.75rem;
+  overflow: auto;
+}
+
+.feed-table-wrap {
+  overflow: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.feed-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.feed-table-wrap th,
+.feed-table-wrap td {
+  border-bottom: 1px solid #f1f5f9;
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+}
+
+.feed-table-wrap th {
+  background: #f8fafc;
+  color: #334155;
+}
+
+@media (max-width: 1100px) {
+  .telemetry-mock__subscriptions {
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+  }
+
+  .telemetry-latest-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .telemetry-mock__controls {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .telemetry-mock__header {
+    flex-direction: column;
+  }
+
+  .telemetry-mock__status {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .telemetry-mock__subscriptions {
+    grid-template-columns: 1fr;
+  }
+}

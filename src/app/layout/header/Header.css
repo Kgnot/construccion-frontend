@@ -1,0 +1,30 @@
+.header {
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1rem;
+    border-bottom: 1px solid rgb(225, 226, 228);
+    background-color: var(--ghost-white);
+}
+
+.logo-section {
+    min-width: 15rem;
+    display: flex;
+    align-items: center;
+}
+
+.header-search {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+}
