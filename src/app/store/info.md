@@ -1,0 +1,1 @@
+Estados globales como el usuario y cosas asi 

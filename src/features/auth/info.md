@@ -1,0 +1,1 @@
+Apartado de autenticacion, login etc. modifica estado global
