@@ -4,6 +4,7 @@ import './SimpleMenu.css';
 
 interface SimpleMenuProps extends ClassNameProp {
     children?: React.ReactNode;
+    collapsed?: boolean;
     icon?: string;
     isOpen?: boolean;
     onClick?: () => void;
@@ -15,6 +16,7 @@ export const SimpleMenu = ({
     text,
     className,
     children,
+    collapsed = false,
     icon,
     isOpen = false,
     onClick,
@@ -38,10 +40,11 @@ export const SimpleMenu = ({
     return (
         <div className={["simple-menu", className].filter(Boolean).join(' ')}>
             <button
-                aria-expanded={hasChildren ? isOpen : undefined}
-                className="simple-menu__trigger"
+                aria-expanded={hasChildren && !collapsed ? isOpen : undefined}
+                className={`simple-menu__trigger ${collapsed ? 'is-collapsed' : ''}`}
                 onClick={handleClick}
                 type="button"
+                title={collapsed ? text : undefined}
             >
                 {icon && (
                     <img
@@ -50,15 +53,15 @@ export const SimpleMenu = ({
                         src={`/icons/${icon}.svg`}
                     />
                 )}
-                <span className="simple-menu__label">{text}</span>
-                {hasChildren && (
+                <span className={`simple-menu__label ${collapsed ? 'is-collapsed' : ''}`}>{text}</span>
+                {hasChildren && !collapsed && (
                     <span aria-hidden="true" className={`simple-menu__indicator ${isOpen ? 'is-open' : ''}`}>
                         ▸
                     </span>
                 )}
             </button>
 
-            {hasChildren && (
+            {hasChildren && !collapsed && (
                 <div className={`simple-menu__children ${isOpen ? 'is-open' : ''}`}>
                     <div className="simple-menu__children-inner">
                         {children}

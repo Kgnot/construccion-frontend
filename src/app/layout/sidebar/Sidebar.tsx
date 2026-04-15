@@ -9,6 +9,7 @@ interface SidebarProps extends ClassNameProp {}
 
 export const Sidebar = ({ className }: SidebarProps) => {
     const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     const toggleMenu = (label: string) => {
         setOpenMenus((prev) => ({
@@ -27,13 +28,35 @@ export const Sidebar = ({ className }: SidebarProps) => {
         window.location.href = '/';
     };
 
+    const toggleSidebar = () => {
+        setIsCollapsed((prev) => !prev);
+    };
+
     return (
-        <aside className={`sidebar ${className || ''}`}>
+        <aside
+            className={`sidebar ${isCollapsed ? 'is-collapsed' : ''} ${className || ''}`}
+            style={{
+                width: isCollapsed ? '4.4rem' : '14rem',
+                flexBasis: isCollapsed ? '4.4rem' : '14rem',
+            }}
+        >
+            <div className="sidebar__top">
+                <button
+                    aria-label={isCollapsed ? 'Expandir sidebar' : 'Colapsar sidebar'}
+                    className="sidebar__toggle-btn"
+                    onClick={toggleSidebar}
+                    type="button"
+                >
+                    {isCollapsed ? '▸' : '◂'}
+                </button>
+            </div>
+
             <nav aria-label="Sidebar menu" className="sidebar__menu-list">
                 {sidebarMenu.map((item) => {
                     if (!item.children) {
                         return (
                             <SimpleMenu
+                                collapsed={isCollapsed}
                                 icon={item.icon}
                                 key={item.label}
                                 onClick={() => handleMenuAction(item.path!)}
@@ -44,14 +67,16 @@ export const Sidebar = ({ className }: SidebarProps) => {
 
                     return (
                         <SimpleMenu
+                            collapsed={isCollapsed}
                             icon={item.icon}
-                            isOpen={openMenus[item.label] || false}
+                            isOpen={!isCollapsed && (openMenus[item.label] || false)}
                             key={item.label}
-                            onToggle={() => toggleMenu(item.label)}
+                            onToggle={isCollapsed ? undefined : () => toggleMenu(item.label)}
                             text={item.label}
                         >
                             {item.children.map((child) => (
                                 <SimpleMenu
+                                    collapsed={isCollapsed}
                                     key={child.label}
                                     onClick={() => handleMenuAction(child.path)}
                                     text={child.label}
@@ -62,8 +87,12 @@ export const Sidebar = ({ className }: SidebarProps) => {
                 })}
             </nav>
 
-            <div className="sidebar__footer">
-                <LogoutButton onLogout={handleLogout} />
+            <div className={`sidebar__footer ${isCollapsed ? 'is-collapsed' : ''}`}>
+                <LogoutButton
+                    className={isCollapsed ? 'sidebar__logout-compact' : ''}
+                    label={isCollapsed ? '⎋' : 'Salir'}
+                    onLogout={handleLogout}
+                />
             </div>
         </aside>
     );
