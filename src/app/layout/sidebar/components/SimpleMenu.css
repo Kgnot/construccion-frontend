@@ -29,6 +29,12 @@
     background-color: rgba(34, 34, 34, 0.06);
 }
 
+.simple-menu__trigger.is-active {
+    background-color: rgba(44, 98, 188, 0.12);
+    color: #1f3e68;
+    font-weight: var(--font-medium);
+}
+
 .simple-menu__trigger:focus-visible {
     outline: 2px solid rgba(32, 67, 139, 0.35);
     outline-offset: 2px;

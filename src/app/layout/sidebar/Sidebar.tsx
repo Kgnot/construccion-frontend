@@ -5,9 +5,12 @@ import { LogoutButton } from '../../../shared/ui/logout/LogoutButton';
 import { sidebarMenu } from './SideBarMenu';
 import './Sidebar.css';
 
-interface SidebarProps extends ClassNameProp {}
+interface SidebarProps extends ClassNameProp {
+    activePath: string;
+    onNavigate: (path: string) => void;
+}
 
-export const Sidebar = ({ className }: SidebarProps) => {
+export const Sidebar = ({ className, activePath, onNavigate }: SidebarProps) => {
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
     const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -16,7 +19,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
     };
 
     const handleMenuAction = (path: string) => {
-        console.log(path);
+        onNavigate(path);
     };
 
     const handleLogout = () => {
@@ -58,9 +61,13 @@ export const Sidebar = ({ className }: SidebarProps) => {
 
             <nav aria-label="Sidebar menu" className="sidebar__menu-list">
                 {sidebarMenu.map((item) => {
+                    const hasActiveChild =
+                        item.children?.some((child) => child.path === activePath) ?? false;
+
                     if (!item.children) {
                         return (
                             <SimpleMenu
+                                active={item.path === activePath}
                                 collapsed={isCollapsed}
                                 icon={item.icon}
                                 key={item.label}
@@ -72,6 +79,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
 
                     return (
                         <SimpleMenu
+                            active={hasActiveChild}
                             collapsed={isCollapsed}
                             icon={item.icon}
                             isOpen={!isCollapsed && activeMenu === item.label}
@@ -81,6 +89,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                         >
                             {item.children.map((child) => (
                                 <SimpleMenu
+                                    active={child.path === activePath}
                                     collapsed={isCollapsed}
                                     key={child.label}
                                     onClick={() => handleMenuAction(child.path)}

@@ -2,7 +2,7 @@ export const sidebarMenu = [
   {
     label: "Inicio",
     icon: "home",
-    path: "/dashboard"
+    path: "/home"
   },
   {
     label: "Compras",
@@ -42,16 +42,16 @@ export const sidebarMenu = [
     label: "Clientes",
     icon: "users",
     children: [
-      { label: "Lista de clientes", path: "/customers/list" },
-      { label: "Agregar cliente", path: "/customers/new" }
+      { label: "Lista de clientes", path: "/customer/list" },
+      { label: "Agregar cliente", path: "/customer/new" }
     ]
   },
   {
     label: "Gestión de dispositivos",
     icon: "zap",
     children: [
-      { label: "Dispositivos activos", path: "/devices/active" },
-      { label: "Telemetría", path: "/devices/telemetry" }
+      { label: "Dispositivos activos", path: "/device/active" },
+      { label: "Telemetría", path: "/device/telemetry" }
     ]
   },
   {

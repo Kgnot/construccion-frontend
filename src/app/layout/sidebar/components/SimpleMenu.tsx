@@ -3,6 +3,7 @@ import type { ClassNameProp } from '../../../../shared/ui/className/ClassNamePro
 import './SimpleMenu.css';
 
 interface SimpleMenuProps extends ClassNameProp {
+    active?: boolean;
     children?: React.ReactNode;
     collapsed?: boolean;
     icon?: string;
@@ -13,6 +14,7 @@ interface SimpleMenuProps extends ClassNameProp {
 }
 
 export const SimpleMenu = ({
+    active = false,
     text,
     className,
     children,
@@ -41,7 +43,7 @@ export const SimpleMenu = ({
         <div className={["simple-menu", className].filter(Boolean).join(' ')}>
             <button
                 aria-expanded={hasChildren && !collapsed ? isOpen : undefined}
-                className={`simple-menu__trigger ${collapsed ? 'is-collapsed' : ''}`}
+                className={`simple-menu__trigger ${collapsed ? 'is-collapsed' : ''} ${active ? 'is-active' : ''}`}
                 onClick={handleClick}
                 type="button"
                 title={collapsed ? text : undefined}
