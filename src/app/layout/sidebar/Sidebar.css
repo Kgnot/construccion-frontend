@@ -4,6 +4,28 @@
     border-bottom: 1px solid rgb(225, 226, 228);
     background-color: var(--ghost-white);
     height: 80%;
-    /* max-height: 600px; */
     border-radius: 0 12px 12px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.5rem;
+    box-sizing: border-box;
+    padding: 0.6rem;
+    color: #243041;
+}
+
+.sidebar__menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    width: 100%;
+    overflow-y: auto;
+    padding-right: 0.15rem;
+}
+
+.sidebar__footer {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 0.6rem;
+    border-top: 1px solid rgba(36, 48, 65, 0.12);
 }
