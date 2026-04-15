@@ -4,6 +4,7 @@ import './SimpleMenu.css';
 
 interface SimpleMenuProps extends ClassNameProp {
     children?: React.ReactNode;
+    icon?: string;
     isOpen?: boolean;
     onClick?: () => void;
     onToggle?: () => void;
@@ -14,6 +15,7 @@ export const SimpleMenu = ({
     text,
     className,
     children,
+    icon,
     isOpen = false,
     onClick,
     onToggle,
@@ -41,6 +43,13 @@ export const SimpleMenu = ({
                 onClick={handleClick}
                 type="button"
             >
+                {icon && (
+                    <img
+                        alt={`${text} icon`}
+                        className="simple-menu__icon"
+                        src={`/icons/${icon}.svg`}
+                    />
+                )}
                 <span className="simple-menu__label">{text}</span>
                 {hasChildren && (
                     <span aria-hidden="true" className={`simple-menu__indicator ${isOpen ? 'is-open' : ''}`}>

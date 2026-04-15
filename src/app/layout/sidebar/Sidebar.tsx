@@ -34,25 +34,27 @@ export const Sidebar = ({ className }: SidebarProps) => {
                     if (!item.children) {
                         return (
                             <SimpleMenu
+                                icon={item.icon}
                                 key={item.label}
-                                text={item.label}
                                 onClick={() => handleMenuAction(item.path!)}
+                                text={item.label}
                             />
                         );
                     }
 
                     return (
                         <SimpleMenu
-                            key={item.label}
-                            text={item.label}
+                            icon={item.icon}
                             isOpen={openMenus[item.label] || false}
+                            key={item.label}
                             onToggle={() => toggleMenu(item.label)}
+                            text={item.label}
                         >
                             {item.children.map((child) => (
                                 <SimpleMenu
                                     key={child.label}
-                                    text={child.label}
                                     onClick={() => handleMenuAction(child.path)}
+                                    text={child.label}
                                 />
                             ))}
                         </SimpleMenu>
