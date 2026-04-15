@@ -1,26 +1,24 @@
 import { useState } from 'react';
-import type { ClassNameProp } from '../../../shared/ui/className/ClassNameProp'
-import { LogoutButton } from '../../../shared/ui/logout/LogoutButton'
-import { SimpleMenu } from './components/SimpleMenu'
-import './Sidebar.css'
+import type { ClassNameProp } from '../../../shared/ui/className/ClassNameProp';
+import { SimpleMenu } from './components/SimpleMenu';
+import { LogoutButton } from '../../../shared/ui/logout/LogoutButton';
+import { sidebarMenu } from './SideBarMenu';
+import './Sidebar.css';
 
-interface SidebarProps extends ClassNameProp {
-}
+interface SidebarProps extends ClassNameProp {}
+
 export const Sidebar = ({ className }: SidebarProps) => {
-    const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
-        appointments: false,
-        patients: false,
-    });
+    const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
-    const toggleMenu = (menuKey: 'appointments' | 'patients') => {
+    const toggleMenu = (label: string) => {
         setOpenMenus((prev) => ({
             ...prev,
-            [menuKey]: !prev[menuKey],
+            [label]: !prev[label],
         }));
     };
 
-    const handleMenuAction = (label: string) => {
-        console.log(`Selected menu item: ${label}`);
+    const handleMenuAction = (path: string) => {
+        console.log(path);
     };
 
     const handleLogout = () => {
@@ -30,34 +28,41 @@ export const Sidebar = ({ className }: SidebarProps) => {
     };
 
     return (
-        <aside className={`sidebar ${className}`}>
+        <aside className={`sidebar ${className || ''}`}>
             <nav aria-label="Sidebar menu" className="sidebar__menu-list">
-                <SimpleMenu onClick={() => handleMenuAction('Dashboard')} text="Dashboard" />
+                {sidebarMenu.map((item) => {
+                    if (!item.children) {
+                        return (
+                            <SimpleMenu
+                                key={item.label}
+                                text={item.label}
+                                onClick={() => handleMenuAction(item.path!)}
+                            />
+                        );
+                    }
 
-                <SimpleMenu
-                    isOpen={openMenus.patients}
-                    onToggle={() => toggleMenu('patients')}
-                    text="Patients"
-                >
-                    <SimpleMenu onClick={() => handleMenuAction('Patients List')} text="List" />
-                    <SimpleMenu onClick={() => handleMenuAction('Patients Add New')} text="Add New" />
-                </SimpleMenu>
-
-                <SimpleMenu
-                    isOpen={openMenus.appointments}
-                    onToggle={() => toggleMenu('appointments')}
-                    text="Appointments"
-                >
-                    <SimpleMenu onClick={() => handleMenuAction('Appointments Upcoming')} text="Upcoming" />
-                    <SimpleMenu onClick={() => handleMenuAction('Appointments Past')} text="Past" />
-                </SimpleMenu>
-
-                <SimpleMenu onClick={() => handleMenuAction('Settings')} text="Settings" />
+                    return (
+                        <SimpleMenu
+                            key={item.label}
+                            text={item.label}
+                            isOpen={openMenus[item.label] || false}
+                            onToggle={() => toggleMenu(item.label)}
+                        >
+                            {item.children.map((child) => (
+                                <SimpleMenu
+                                    key={child.label}
+                                    text={child.label}
+                                    onClick={() => handleMenuAction(child.path)}
+                                />
+                            ))}
+                        </SimpleMenu>
+                    );
+                })}
             </nav>
 
             <div className="sidebar__footer">
                 <LogoutButton onLogout={handleLogout} />
             </div>
         </aside>
-    )
-}
+    );
+};

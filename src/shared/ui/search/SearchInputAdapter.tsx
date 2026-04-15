@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ClassNameProp } from '../className/ClassNameProp'
+import { Modal } from '../modal'
+import { ModalBackdrop } from '../modal'
 import './SearchInputAdapter.css'
 
 export interface SearchItem {
@@ -97,9 +99,6 @@ export const SearchInputAdapter = ({
     }
   }, [])
 
-  const overlayClassName = `search-adapter-overlay is-${phase}`
-  const panelClassName = `search-adapter-panel is-${phase}`
-
   return (
     <div className={'search-adapter ' + className}>
       <button
@@ -123,14 +122,8 @@ export const SearchInputAdapter = ({
       </button>
 
       {isRendered && (
-        <div
-          className={overlayClassName}
-          role="dialog"
-          aria-modal="true"
-          aria-label={title}
-          onClick={onClose}
-        >
-          <div className={panelClassName} onClick={(e) => e.stopPropagation()}>
+        <ModalBackdrop phase={phase} onClick={onClose}>
+          <Modal ariaLabel={title} className="search-adapter-panel" phase={phase} onClick={(e) => e.stopPropagation()}>
             <div className="search-adapter-top">
               <input
                 type="search"
@@ -163,8 +156,8 @@ export const SearchInputAdapter = ({
                 </li>
               ))}
             </ul>
-          </div>
-        </div>
+          </Modal>
+        </ModalBackdrop>
       )}
     </div>
   )
