@@ -63,6 +63,7 @@ export const Sidebar = ({ className, activePath, onNavigate }: SidebarProps) => 
                 {sidebarMenu.map((item) => {
                     const hasActiveChild =
                         item.children?.some((child) => child.path === activePath) ?? false;
+                    const isItemActive = item.path === activePath;
 
                     if (!item.children) {
                         return (
@@ -79,11 +80,12 @@ export const Sidebar = ({ className, activePath, onNavigate }: SidebarProps) => 
 
                     return (
                         <SimpleMenu
-                            active={hasActiveChild}
+                            active={hasActiveChild || isItemActive}
                             collapsed={isCollapsed}
                             icon={item.icon}
                             isOpen={!isCollapsed && activeMenu === item.label}
                             key={item.label}
+                            onClick={isCollapsed && item.path ? () => handleMenuAction(item.path) : undefined}
                             onToggle={isCollapsed ? undefined : () => toggleMenu(item.label)}
                             text={item.label}
                         >

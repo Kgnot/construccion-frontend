@@ -28,6 +28,11 @@ export const SimpleMenu = ({
 
     const handleClick = () => {
         if (hasChildren) {
+            if (collapsed && onClick) {
+                onClick();
+                return;
+            }
+
             if (onToggle) {
                 onToggle();
             }

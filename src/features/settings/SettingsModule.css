@@ -1,0 +1,3 @@
+@import '../FeatureModule.css';
+
+.settings-module { --feature-accent: #455f8d; }

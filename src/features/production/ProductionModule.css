@@ -1,0 +1,3 @@
+@import '../FeatureModule.css';
+
+.production-module { --feature-accent: #4a62a0; }

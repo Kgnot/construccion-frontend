@@ -1,0 +1,5 @@
+@import '../FeatureModule.css';
+
+.home-module {
+  --feature-accent: #5977a8;
+}
