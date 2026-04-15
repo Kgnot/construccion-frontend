@@ -8,14 +8,11 @@ import './Sidebar.css';
 interface SidebarProps extends ClassNameProp {}
 
 export const Sidebar = ({ className }: SidebarProps) => {
-    const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
+    const [activeMenu, setActiveMenu] = useState<string | null>(null);
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const toggleMenu = (label: string) => {
-        setOpenMenus((prev) => ({
-            ...prev,
-            [label]: !prev[label],
-        }));
+        setActiveMenu((prev) => (prev === label ? null : label));
     };
 
     const handleMenuAction = (path: string) => {
@@ -29,7 +26,15 @@ export const Sidebar = ({ className }: SidebarProps) => {
     };
 
     const toggleSidebar = () => {
-        setIsCollapsed((prev) => !prev);
+        setIsCollapsed((prev) => {
+            const next = !prev;
+
+            if (next) {
+                setActiveMenu(null);
+            }
+
+            return next;
+        });
     };
 
     return (
@@ -69,7 +74,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                         <SimpleMenu
                             collapsed={isCollapsed}
                             icon={item.icon}
-                            isOpen={!isCollapsed && (openMenus[item.label] || false)}
+                            isOpen={!isCollapsed && activeMenu === item.label}
                             key={item.label}
                             onToggle={isCollapsed ? undefined : () => toggleMenu(item.label)}
                             text={item.label}
