@@ -128,7 +128,7 @@ export const CustomerListView = () => {
         status: '',
         userId: modalCustomer.id,
         deviceType: selectedDevice,
-        interval: 10,
+        interval: 2,
       });
 
       console.log('Dispositivo asociado exitosamente', selectedDevice, 'al cliente', modalCustomer.id);
