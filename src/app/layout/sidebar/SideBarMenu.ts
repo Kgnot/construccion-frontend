@@ -56,8 +56,7 @@ export const sidebarMenu = [
     icon: "zap",
     path: "/device",
     children: [
-      { label: "Dispositivos activos", path: "/device/active" },
-      { label: "Telemetría", path: "/device/telemetry" }
+      { label: "Dispositivos activos", path: "/device/active" }
     ]
   },
   {

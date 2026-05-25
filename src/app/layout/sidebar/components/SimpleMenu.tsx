@@ -1,4 +1,5 @@
 import { Children } from 'react';
+import {Link} from 'react-router';
 import type { ClassNameProp } from '../../../../shared/ui/className/ClassNameProp';
 import './SimpleMenu.css';
 
@@ -11,6 +12,7 @@ interface SimpleMenuProps extends ClassNameProp {
     onClick?: () => void;
     onToggle?: () => void;
     text: string;
+    to?: string;
 }
 
 export const SimpleMenu = ({
@@ -23,6 +25,7 @@ export const SimpleMenu = ({
     isOpen = false,
     onClick,
     onToggle,
+    to,
 }: SimpleMenuProps) => {
     const hasChildren = Children.count(children) > 0;
 
@@ -44,29 +47,45 @@ export const SimpleMenu = ({
         }
     };
 
+    const inner = (
+        <>
+            {icon && (
+                <img
+                    alt={`${text} icon`}
+                    className="simple-menu__icon"
+                    src={`/icons/${icon}.svg`}
+                />
+            )}
+            <span className={`simple-menu__label ${collapsed ? 'is-collapsed' : ''}`}>{text}</span>
+            {hasChildren && !collapsed && (
+                <span aria-hidden="true" className={`simple-menu__indicator ${isOpen ? 'is-open' : ''}`}>
+                    ▸
+                </span>
+            )}
+        </>
+    );
+
     return (
         <div className={["simple-menu", className].filter(Boolean).join(' ')}>
-            <button
-                aria-expanded={hasChildren && !collapsed ? isOpen : undefined}
-                className={`simple-menu__trigger ${collapsed ? 'is-collapsed' : ''} ${active ? 'is-active' : ''}`}
-                onClick={handleClick}
-                type="button"
-                title={collapsed ? text : undefined}
-            >
-                {icon && (
-                    <img
-                        alt={`${text} icon`}
-                        className="simple-menu__icon"
-                        src={`/icons/${icon}.svg`}
-                    />
-                )}
-                <span className={`simple-menu__label ${collapsed ? 'is-collapsed' : ''}`}>{text}</span>
-                {hasChildren && !collapsed && (
-                    <span aria-hidden="true" className={`simple-menu__indicator ${isOpen ? 'is-open' : ''}`}>
-                        ▸
-                    </span>
-                )}
-            </button>
+            {to ? (
+                <Link
+                    className={`simple-menu__trigger ${collapsed ? 'is-collapsed' : ''} ${active ? 'is-active' : ''}`}
+                    title={collapsed ? text : undefined}
+                    to={to}
+                >
+                    {inner}
+                </Link>
+            ) : (
+                <button
+                    aria-expanded={hasChildren && !collapsed ? isOpen : undefined}
+                    className={`simple-menu__trigger ${collapsed ? 'is-collapsed' : ''} ${active ? 'is-active' : ''}`}
+                    onClick={handleClick}
+                    type="button"
+                    title={collapsed ? text : undefined}
+                >
+                    {inner}
+                </button>
+            )}
 
             {hasChildren && !collapsed && (
                 <div className={`simple-menu__children ${isOpen ? 'is-open' : ''}`}>
