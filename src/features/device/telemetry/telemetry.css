@@ -123,6 +123,19 @@
   background: rgba(37, 99, 235, 0.06);
 }
 
+.telemetry_user_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.65rem;
+  margin-top: 0.2rem;
+  border-radius: 6px;
+  background: rgba(37, 99, 235, 0.07);
+  color: #2563eb;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
 .charts_grid {
   display: flex;
   flex-wrap: wrap;

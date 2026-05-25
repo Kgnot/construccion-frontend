@@ -5,7 +5,10 @@ export type DeviceResponse = {
     serialNumber: string,
     model: string,
     manufacturer: string,
-    status: string
+    status: string,
+    userId: string,
+    deviceType: string,
+    interval: number
 }
 
 const url = 'http://localhost:8082/api/v1/products';

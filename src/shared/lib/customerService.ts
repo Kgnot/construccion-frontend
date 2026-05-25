@@ -54,6 +54,31 @@ export async function getAllCustomers(): Promise<Customer[]> {
   }
 }
 
+export async function getCustomerById(id: string): Promise<Customer | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/customers/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    const result: ApiResponse<Customer> = await response.json();
+
+    if (result.success && result.data) {
+      return result.data;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching customer:', error);
+    throw error;
+  }
+}
+
 /**
  * Crea un nuevo cliente en el backend
  */

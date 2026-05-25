@@ -7,6 +7,7 @@ interface TelemetryWidgetPanelProps {
   widgets: { key: string; value: string }[];
   toggleWidget?: (widget: string) => void;
   backTo?: string;
+  userId?: string;
   children?: React.ReactNode;
 }
 
@@ -17,6 +18,7 @@ export const TelemetryWidgetPanel = ({
   widgets,
   toggleWidget,
   backTo,
+  userId,
   children,
 }: TelemetryWidgetPanelProps) => {
   const navigate = useNavigate();
@@ -30,6 +32,11 @@ export const TelemetryWidgetPanel = ({
         <p className="main-box__eyebrow">Vista activa</p>
         <h2>{title}</h2>
         <p>{description}</p>
+        {userId && (
+          <span className="telemetry_user_badge">
+            Dispositivo: {userId}
+          </span>
+        )}
         {backTo && (
           <button className="btn_back_active" onClick={() => navigate(backTo)}>
             ← Dispositivos activos
