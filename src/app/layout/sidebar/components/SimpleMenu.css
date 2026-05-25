@@ -22,6 +22,7 @@
     font: inherit;
     font-size: 0.92rem;
     font-weight: var(--font-regular);
+    text-decoration: none;
     transition: background-color 0.2s ease;
 }
 

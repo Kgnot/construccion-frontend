@@ -1,0 +1,144 @@
+.card_message{
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  background: linear-gradient(180deg, rgba(55,138,221,0.06), rgba(55,138,221,0.02));
+  box-shadow: 0 6px 18px rgba(35, 70, 110, 0.06);
+  border: 1px solid rgba(55,138,221,0.12);
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  flex: 1 1 calc(33.333% - 0.67rem);
+  min-width: calc(33.333% - 0.67rem);
+}
+
+.card_message h3 {
+  margin: 0;
+  color: var(--feature-accent);
+  font-weight: var(--font-medium);
+  font-size: 1.25rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.12rem;
+}
+
+.card_message p {
+  margin: 0;
+  color: #60758d;
+}
+
+.main_box_telemetry{
+    display: flex;
+    flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 5rem;
+}
+
+.main_box_cards{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.card_icon{
+    color: #2563EB;
+    opacity: 0.8;
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+.card_unit {
+  font-size: 0.78rem;
+  color: #2563EB;
+}
+.card_name{font-weight:100}
+
+.card_value{font-weight:700}
+
+.main_box_cards{align-items: flex-start}
+
+.card_background_icon{
+    background-color: #DBEAFE;
+    border-radius: 100%;
+    width: 2.8rem;
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card_message_info{
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-left: 10px;
+    min-width: 0;
+}
+
+.chart_wrapper {
+  /**position: relative;**/
+  width: 100%;
+  height: 260px;
+  min-width: 0;
+}
+
+.chart_wrapper canvas {
+  max-width: 100%;
+}
+
+.chart_title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.chart_title h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.btn_back_active {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  margin-top: 0.3rem;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 8px;
+  background: transparent;
+  color: #2563eb;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+  width: fit-content;
+}
+
+.btn_back_active:hover {
+  background: rgba(37, 99, 235, 0.06);
+}
+
+.charts_grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.charts_grid > div {
+  flex: 1 1 calc(50% - 0.5rem);
+  min-width: calc(50% - 0.5rem);
+}
+
+.data-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: var(--font-medium);
+  margin-bottom: 1rem;
+}
