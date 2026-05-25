@@ -5,7 +5,8 @@
 }
 
 .logo-section-root span {
-    font-weight: 600;
+    	font-weight: var(--font-regular);
+
     font-size: 1.25rem;
     color: #222;
 }

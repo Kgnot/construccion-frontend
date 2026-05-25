@@ -1,0 +1,1 @@
+Módulo de producción. Gestiona órdenes de producción y seguimiento de cola de ensamblaje.

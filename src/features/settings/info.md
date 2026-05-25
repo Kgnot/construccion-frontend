@@ -1,0 +1,1 @@
+Configuraciones del sistema. Ajustes de cuenta, preferencias y parámetros generales.

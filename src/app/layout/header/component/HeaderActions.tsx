@@ -1,4 +1,6 @@
+import { useEffect, useRef, useState } from 'react'
 import type { ClassNameProp } from '../../../../shared/ui/className/ClassNameProp'
+import { MessagesAction, NotificationsAction, ProfileAction } from './components'
 import './HeaderActions.css'
 
 interface HeaderActionsProps extends ClassNameProp {
@@ -7,29 +9,7 @@ interface HeaderActionsProps extends ClassNameProp {
   initials?: string
 }
 
-const BellIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path
-      d="M6 10a6 6 0 1 1 12 0v4l1.5 2H4.5L6 14v-4Zm4.5 8a1.5 1.5 0 0 0 3 0"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-)
-
-const MessageIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path
-      d="M7 8h10M7 12h7m7-1a8 8 0 0 1-8 8H7l-4 3v-7a8 8 0 1 1 18-4Z"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-)
+type ActionPanelKey = 'notifications' | 'messages' | 'profile' | null
 
 export const HeaderActions = ({
   className = '',
@@ -37,23 +17,56 @@ export const HeaderActions = ({
   hasMessages = false,
   initials = 'KG',
 }: HeaderActionsProps) => {
-  return (
-    <div className={`header-actions-root ${className}`}>
-      <button type="button" className="header-actions-btn" aria-label="Notificaciones">
-        <BellIcon />
-        {hasNotifications && <span className="header-actions-badge" aria-hidden="true" />}
-      </button>
+  const [activePanel, setActivePanel] = useState<ActionPanelKey>(null)
+  const rootRef = useRef<HTMLDivElement | null>(null)
 
-      <button type="button" className="header-actions-btn" aria-label="Mensajería">
-        <MessageIcon />
-        {hasMessages && <span className="header-actions-badge" aria-hidden="true" />}
-      </button>
+  const togglePanel = (panel: Exclude<ActionPanelKey, null>) => {
+    setActivePanel((prev) => (prev === panel ? null : panel))
+  }
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) {
+        setActivePanel(null)
+      }
+    }
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setActivePanel(null)
+      }
+    }
+
+    document.addEventListener('mousedown', handleOutsideClick)
+    window.addEventListener('keydown', handleEscape)
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick)
+      window.removeEventListener('keydown', handleEscape)
+    }
+  }, [])
+
+  return (
+    <div ref={rootRef} className={`header-actions-root ${className}`}>
+      <NotificationsAction
+        hasNotifications={hasNotifications}
+        isOpen={activePanel === 'notifications'}
+        onToggle={() => togglePanel('notifications')}
+      />
+
+      <MessagesAction
+        hasMessages={hasMessages}
+        isOpen={activePanel === 'messages'}
+        onToggle={() => togglePanel('messages')}
+      />
 
       <div className="header-actions-divider" />
 
-      <button type="button" className="header-actions-avatar-btn" aria-label={`Perfil de ${initials}`}>
-        <div className="header-actions-avatar">{initials}</div>
-      </button>
+      <ProfileAction
+        initials={initials}
+        isOpen={activePanel === 'profile'}
+        onToggle={() => togglePanel('profile')}
+      />
     </div>
   )
 }

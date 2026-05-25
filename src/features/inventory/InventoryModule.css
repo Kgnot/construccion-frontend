@@ -1,0 +1,3 @@
+@import '../FeatureModule.css';
+
+.inventory-module { --feature-accent: #336f95; }

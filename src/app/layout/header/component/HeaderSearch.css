@@ -34,7 +34,7 @@
 
 .search-trigger__text {
     flex: 1;
-    font-size: 13px;
+    font-size: 0.8em;
     color: #9ca3af;
     white-space: nowrap;
     overflow: hidden;
@@ -42,7 +42,7 @@
 }
 
 .search-trigger__kbd {
-    font-size: 11px;
+    font-size: 0.7em;
     color: #9ca3af;
     background: #fff;
     border: 1px solid #e5e7eb;

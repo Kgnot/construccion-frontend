@@ -1,0 +1,1 @@
+Módulo de ventas. Centraliza órdenes, pagos y estado del flujo comercial.
