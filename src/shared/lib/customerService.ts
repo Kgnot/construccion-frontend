@@ -20,6 +20,20 @@ export interface CreateCustomerRequest {
   birthDay: string;
 }
 
+export interface LoginRequest {
+  email: string;
+  documentNumber: string;
+}
+
+export interface LoginResponse {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  documentType: string | null;
+  documentNumber: string | null;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;
@@ -105,6 +119,40 @@ export async function createCustomer(
     }
   } catch (error) {
     console.error('Error creating customer:', error);
+    throw error;
+  }
+}
+
+/**
+ * Inicia sesión verificando email y documentNumber
+ */
+export async function login(
+  credentials: LoginRequest
+): Promise<LoginResponse | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/customers/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+
+    if (!response.ok) {
+      if (response.status === 401 || response.status === 404) {
+        return null; // Credenciales inválidas
+      }
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    const result: ApiResponse<LoginResponse> = await response.json();
+
+    if (result.success && result.data) {
+      return result.data;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error during login:', error);
     throw error;
   }
 }

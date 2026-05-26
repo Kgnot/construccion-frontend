@@ -20,10 +20,15 @@ import { DeviceTelemetryView } from '../../../features/device/telemetry/DeviceTe
 import { DeviceModule } from '../../../features/device/DeviceModule'
 import { SettingsModule } from '../../../features/settings/SettingsModule'
 import { ActiveDevicesTable } from '../../../features/device/active/ActiveDevicesTable'
+import { LoginView } from '../../../features/auth/LoginView'
 import { createBrowserRouter } from 'react-router'
 import { Layout } from '../Layout'
 
 export const router = createBrowserRouter([
+  {
+    path: '/login',
+    element: <LoginView />,
+  },
   {
     path: '/',
     element: <Layout />,
