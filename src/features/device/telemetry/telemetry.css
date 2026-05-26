@@ -136,6 +136,25 @@
   font-weight: 500;
 }
 
+.telemetry_deactivated_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.65rem;
+  margin-top: 0.2rem;
+  border-radius: 6px;
+  background: rgba(220, 38, 38, 0.08);
+  color: #dc2626;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.main-box__card.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .charts_grid {
   display: flex;
   flex-wrap: wrap;
@@ -154,4 +173,41 @@
   font-size: 1.4rem;
   font-weight: var(--font-medium);
   margin-bottom: 1rem;
+}
+
+.telemetry_placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.telemetry_placeholder h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+.telemetry_placeholder p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.telemetry_spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #e2e8f0;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: telemetry_spin 0.7s linear infinite;
+}
+
+@keyframes telemetry_spin {
+  to { transform: rotate(360deg); }
 }

@@ -5,15 +5,17 @@ import { SimpleMenu } from './components/SimpleMenu';
 import { LogoutButton } from '../../../shared/ui/logout/LogoutButton';
 import { sidebarMenu } from './SideBarMenu';
 import './Sidebar.css';
+import { useApp } from '../../providers/AuthProvider';
 
 interface SidebarProps extends ClassNameProp {}
 
 export const Sidebar = ({ className }: SidebarProps) => {
+  const { isAdmin, user } = useApp();
   const location = useLocation();
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
-
+  const { setUser, setIsAdmin, setIsAuthenticated } = useApp();
   const toggleMenu = (label: string) => {
     setActiveMenu((prev) => (prev === label ? null : label));
   };
@@ -21,7 +23,10 @@ export const Sidebar = ({ className }: SidebarProps) => {
   const handleLogout = () => {
     localStorage.clear();
     sessionStorage.clear();
-    window.location.href = '/';
+    setUser(null);
+    setIsAdmin(false);
+    setIsAuthenticated(false);
+    navigate('/login');
   };
 
   const toggleSidebar = () => {
@@ -55,18 +60,25 @@ export const Sidebar = ({ className }: SidebarProps) => {
 
       <nav aria-label="Sidebar menu" className="sidebar__menu-list">
         {sidebarMenu.map((item) => {
+          const adminOnly = (item as { adminOnly?: boolean }).adminOnly;
+          if (adminOnly === true && !isAdmin) return null;
+          if (adminOnly === false && isAdmin) return null;
+
           const hasActiveChild =
             item.children?.some((child) => isActive(child.path)) ?? false;
           const isItemActive = isActive(item.path);
 
           if (!item.children) {
+            const dynamicTo = (item as { dynamicUserId?: boolean }).dynamicUserId
+              ? `${item.path}/${user?.id}`
+              : item.path;
             return (
               <SimpleMenu
-                active={isItemActive}
+                active={isItemActive || (user?.id ? isActive(`${item.path}/${user.id}`) : false)}
                 collapsed={isCollapsed}
                 icon={item.icon}
                 key={item.label}
-                to={item.path}
+                to={dynamicTo}
                 text={item.label}
               />
             );
