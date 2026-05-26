@@ -1,5 +1,7 @@
 /* ============================================================
    LoginView.css
+   Sigue el design system: Noto Sans, --cultured-grey, #446a9d,
+   bordes rgba(219,224,232,0.9), border-radius 16px, sombras suaves
    ============================================================ */
 
 /* ── Raíz ────────────────────────────────────────────────────── */
@@ -115,37 +117,6 @@
   gap: 1rem;
 }
 
-.login-form__error {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 8px;
-  color: #dc2626;
-  font-size: 0.85rem;
-  font-weight: var(--font-medium);
-  animation: slideDown 0.3s ease-out;
-}
-
-.login-form__error svg {
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .login-form__field {
   display: flex;
   flex-direction: column;
@@ -209,22 +180,34 @@
   box-shadow: 0 0 0 3px rgba(68, 106, 157, 0.12);
 }
 
-/* Botón ojo */
-.login-form__eye {
+/* Input con botón ojo — padding derecho extra */
+.login-form__input--has-eye {
+  padding-right: 2.6rem;
+}
+
+/* Botón ojo toggle */
+.login-form__eye-toggle {
   position: absolute;
   right: 0.75rem;
   background: none;
   border: none;
-  padding: 0;
+  padding: 0.2rem;
   cursor: pointer;
   color: #8fa3b8;
   display: flex;
   align-items: center;
+  justify-content: center;
   transition: color 0.16s;
+  z-index: 1;
+  line-height: 1;
 }
 
-.login-form__eye:hover {
+.login-form__eye-toggle:hover {
   color: #446a9d;
+}
+
+.login-form__eye-toggle:active {
+  transform: scale(0.95);
 }
 
 /* ── Opciones ─────────────────────────────────────────────────── */

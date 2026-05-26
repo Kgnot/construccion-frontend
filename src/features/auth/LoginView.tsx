@@ -1,54 +1,46 @@
 import { useState } from 'react';
-import { loginCustomer } from '../../shared/services/authService';
+import { login } from '../../shared/lib/customerService';
 import './LoginView.css';
 
 export function LoginView() {
   const [email, setEmail] = useState('');
   const [documentNumber, setDocumentNumber] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [showDocument, setShowDocument] = useState(false);
+
+  const showToast = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+    (window as any).showToast?.(message, type, 4000);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setIsLoading(true);
 
-    if (!email || !documentNumber) {
-      setError('Por favor completa todos los campos');
-      setIsLoading(false);
+    if (!email.trim() || !documentNumber.trim()) {
+      showToast('Por favor completa todos los campos', 'warning');
       return;
     }
 
+    setIsLoading(true);
+
     try {
-      const response = await loginCustomer({
-        email,
-        documentNumber,
+      const result = await login({
+        email: email.trim(),
+        documentNumber: documentNumber.trim(),
       });
 
-      if (response.success && response.data) {
-        // Mostrar mensaje de éxito
-        (window as any).showToast?.(`¡Bienvenido ${response.data.firstName}! Cliente autenticado correctamente`, 'success', 3000);
-
-        // Guardar datos del usuario en localStorage
-        localStorage.setItem('user', JSON.stringify(response.data));
-        localStorage.setItem('isAuthenticated', 'true');
-
-        // Aquí puedes redirigir o hacer algo más
-        console.log('Cliente autenticado:', response.data);
-
-        // Limpiar formulario
-        setEmail('');
-        setDocumentNumber('');
+      if (result) {
+        showToast(`¡Bienvenido ${result.firstName}!`, 'success');
+        // Aquí puedes redirigir al usuario o guardar los datos de sesión
+        console.log('Login exitoso:', result);
+        // localStorage.setItem('user', JSON.stringify(result));
+        // Redirigir al dashboard u otra página
       } else {
-        setError(response.message || 'Correo o documento inválido');
-        (window as any).showToast?.(response.message || 'Correo o documento inválido', 'error', 4000);
+        showToast('Email o documento incorrecto', 'error');
       }
-    } catch (err) {
-      const errorMessage = 'Error al conectar con el servidor';
-      setError(errorMessage);
-      (window as any).showToast?.(errorMessage, 'error', 4000);
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      showToast('Error al iniciar sesión. Intenta de nuevo.', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -73,18 +65,6 @@ export function LoginView() {
           </div>
 
           <form className="login-form" onSubmit={handleSubmit} noValidate>
-            {/* Error message */}
-            {error && (
-              <div className="login-form__error">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="8" x2="12" y2="12"></line>
-                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-                <span>{error}</span>
-              </div>
-            )}
-
             {/* Email */}
             <div className={`login-form__field ${focusedField === 'email' ? 'is-focused' : ''}`}>
               <label htmlFor="login-email" className="login-form__label">
@@ -108,12 +88,11 @@ export function LoginView() {
                   onBlur={() => setFocusedField(null)}
                   autoComplete="email"
                   required
-                  disabled={isLoading}
                 />
               </div>
             </div>
 
-            {/* Documento */}
+            {/* Número de documento */}
             <div className={`login-form__field ${focusedField === 'documentNumber' ? 'is-focused' : ''}`}>
               <label htmlFor="login-document" className="login-form__label">
                 Número de documento
@@ -121,30 +100,50 @@ export function LoginView() {
               <div className="login-form__input-wrap">
                 <span className="login-form__icon">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    <rect x="3" y="4" width="18" height="16" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
                   </svg>
                 </span>
                 <input
                   id="login-document"
-                  type="text"
+                  type={showDocument ? "text" : "password"}
                   className="login-form__input"
-                  placeholder="Ej: 1234567890"
+                  placeholder="Contraseña"
                   value={documentNumber}
                   onChange={(e) => setDocumentNumber(e.target.value)}
                   onFocus={() => setFocusedField('documentNumber')}
                   onBlur={() => setFocusedField(null)}
                   autoComplete="off"
                   required
-                  disabled={isLoading}
                 />
+                <button
+                  type="button"
+                  className="login-form__eye-toggle"
+                  onClick={() => setShowDocument(!showDocument)}
+                  aria-label={showDocument ? "Ocultar documento" : "Mostrar documento"}
+                  title={showDocument ? "Ocultar documento" : "Mostrar documento"}
+                >
+                  {showDocument ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                      <line x1="1" y1="1" x2="23" y2="23"></line>
+                    </svg>
+                  )}
+                </button>
               </div>
             </div>
 
             {/* Opciones */}
             <div className="login-form__options">
               <label className="login-form__remember">
-                <input type="checkbox" disabled={isLoading} />
+                <input type="checkbox" />
                 <span className="login-form__checkbox" />
                 <span>Recordarme</span>
               </label>
@@ -155,7 +154,7 @@ export function LoginView() {
             <button
               type="submit"
               className={`login-form__submit ${isLoading ? 'is-loading' : ''}`}
-              disabled={isLoading || !email || !documentNumber}
+              disabled={isLoading}
             >
               {isLoading
                 ? <span className="login-form__spinner" />
@@ -170,7 +169,7 @@ export function LoginView() {
           </p>
         </div>
 
-        <p className="login-legal">© 2026 MediBug · Todos los derechos reservados</p>
+        <p className="login-legal">© 2025 MediBug · Todos los derechos reservados</p>
       </div>
     </div>
   );
