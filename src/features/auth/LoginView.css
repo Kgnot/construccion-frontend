@@ -1,0 +1,385 @@
+/* ============================================================
+   LoginView.css
+   ============================================================ */
+
+/* ── Raíz ────────────────────────────────────────────────────── */
+.login-root {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family);
+  position: relative;
+}
+
+/* Fondo de puntos igual al body global */
+.login-bg {
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(#e8eaed 2px, transparent 2px);
+  background-size: 48px 48px;
+  background-color: #ffffff;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Columna centrada ─────────────────────────────────────────── */
+.login-wrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  width: 100%;
+  max-width: 400px;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+  animation: loginEntrance 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes loginEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Marca / Logo ─────────────────────────────────────────────── */
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.login-brand__logo {
+  width: 2.4rem;
+  height: 2.4rem;
+  object-fit: contain;
+}
+
+
+
+.login-brand__name {
+  font-size: 1.3rem;
+  font-weight: var(--font-medium);
+  color: #213247;
+  letter-spacing: -0.01em;
+}
+
+/* ── Tarjeta ──────────────────────────────────────────────────── */
+.login-card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(219, 224, 232, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 14px 30px rgba(18, 35, 58, 0.08);
+  backdrop-filter: blur(2px);
+  padding: 1.8rem 1.7rem 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+/* ── Cabecera de la tarjeta ───────────────────────────────────── */
+.login-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.login-card__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: var(--font-medium);
+  color: #213247;
+  letter-spacing: -0.01em;
+}
+
+.login-card__subtitle {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: var(--font-regular);
+  color: #5f7085;
+}
+
+/* ── Formulario ───────────────────────────────────────────────── */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-form__error {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.85rem;
+  font-weight: var(--font-medium);
+  animation: slideDown 0.3s ease-out;
+}
+
+.login-form__error svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+}
+
+.login-form__label {
+  font-size: 0.8rem;
+  font-weight: var(--font-medium);
+  color: #5f7085;
+  transition: color 0.16s;
+}
+
+.login-form__field.is-focused .login-form__label {
+  color: #446a9d;
+}
+
+/* Input wrap */
+.login-form__input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-form__icon {
+  position: absolute;
+  left: 0.75rem;
+  color: #8fa3b8;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  transition: color 0.16s;
+}
+
+.login-form__field.is-focused .login-form__icon {
+  color: #446a9d;
+}
+
+.login-form__input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.6rem 2.4rem 0.6rem 2.3rem;
+  font-family: var(--font-family);
+  font-size: 0.88rem;
+  font-weight: var(--font-regular);
+  color: #213247;
+  background: rgba(248, 251, 255, 0.85);
+  border: 1px solid rgba(174, 190, 210, 0.7);
+  border-radius: 9px;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+}
+
+.login-form__input::placeholder {
+  color: #9aafbf;
+}
+
+.login-form__input:focus {
+  border-color: #446a9d;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(68, 106, 157, 0.12);
+}
+
+/* Botón ojo */
+.login-form__eye {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #8fa3b8;
+  display: flex;
+  align-items: center;
+  transition: color 0.16s;
+}
+
+.login-form__eye:hover {
+  color: #446a9d;
+}
+
+/* ── Opciones ─────────────────────────────────────────────────── */
+.login-form__options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -0.1rem;
+}
+
+.login-form__remember {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  font-weight: var(--font-regular);
+  color: #5f7085;
+  cursor: pointer;
+  user-select: none;
+}
+
+.login-form__remember input[type='checkbox'] {
+  display: none;
+}
+
+.login-form__checkbox {
+  width: 15px;
+  height: 15px;
+  border-radius: 5px;
+  border: 1px solid rgba(174, 190, 210, 0.7);
+  background: rgba(248, 251, 255, 0.85);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.16s, background 0.16s;
+}
+
+.login-form__remember input:checked + .login-form__checkbox {
+  background: #446a9d;
+  border-color: #446a9d;
+}
+
+.login-form__remember input:checked + .login-form__checkbox::after {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 7px;
+  border: 1.5px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translateY(-1px);
+}
+
+.login-form__forgot {
+  font-size: 0.82rem;
+  font-weight: var(--font-regular);
+  color: #446a9d;
+  text-decoration: none;
+  transition: opacity 0.16s;
+}
+
+.login-form__forgot:hover {
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+/* ── Botón de submit ──────────────────────────────────────────── */
+.login-form__submit {
+  width: 100%;
+  padding: 0.68rem 1.2rem;
+  margin-top: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: var(--font-semibold);
+  color: #ffffff;
+  background: rgba(68, 106, 157, 0.9);
+  border: 1px solid rgba(68, 106, 157, 0.7);
+  border-radius: 9px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(68, 106, 157, 0.22), 0 1px 3px rgba(68, 106, 157, 0.15);
+  transition: background 0.18s, box-shadow 0.18s, transform 0.14s;
+}
+
+.login-form__submit:hover:not(:disabled) {
+  background: rgba(68, 106, 157, 1);
+  box-shadow: 0 6px 20px rgba(68, 106, 157, 0.3);
+  transform: translateY(-1px);
+}
+
+.login-form__submit:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(68, 106, 157, 0.2);
+}
+
+.login-form__submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Spinner */
+.login-form__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: loginSpin 0.7s linear infinite;
+}
+
+@keyframes loginSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Footer de la tarjeta ─────────────────────────────────────── */
+.login-card__footer {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: var(--font-regular);
+  color: #8fa3b8;
+  text-align: center;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(190, 202, 218, 0.4);
+}
+
+.login-card__footer a {
+  color: #446a9d;
+  text-decoration: none;
+  font-weight: var(--font-medium);
+}
+
+.login-card__footer a:hover {
+  text-decoration: underline;
+}
+
+/* ── Copyright ────────────────────────────────────────────────── */
+.login-legal {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: var(--font-regular);
+  color: #b0bec8;
+  text-align: center;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 1.4rem 1.2rem 1.2rem;
+  }
+
+  .login-wrapper {
+    padding: 1rem 0.75rem;
+  }
+}
