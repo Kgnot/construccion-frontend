@@ -21,8 +21,54 @@ import { DeviceModule } from '../../../features/device/DeviceModule'
 import { SettingsModule } from '../../../features/settings/SettingsModule'
 import { ActiveDevicesTable } from '../../../features/device/active/ActiveDevicesTable'
 import { LoginView } from '../../../features/auth/LoginView'
-import { createBrowserRouter } from 'react-router'
+import { createBrowserRouter, useNavigate, Navigate } from 'react-router'
 import { Layout } from '../Layout'
+import { useApp } from '../../providers/AuthProvider'
+import { useEffect } from 'react'
+
+
+// Layout wrapper for authenticated pages
+function AuthLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { isAuthenticated, loading } = useApp();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      navigate('/login', { replace: true });
+    }
+  }, [loading, isAuthenticated, navigate]);
+
+  if (loading || !isAuthenticated) {
+    return null;
+  }
+
+  return <>{children}</>;
+}
+
+function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { isAdmin } = useApp();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate("/dashboard");
+    }
+  }, [isAdmin, navigate]);
+
+  if (!isAdmin) {
+    return null;
+  }
+
+  return <>{children}</>;
+}
 
 export const router = createBrowserRouter([
   {
@@ -31,29 +77,30 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <Layout />,
+    element: <AuthLayout><Layout /></AuthLayout>,
     children: [
-      { index: true, element: <HomeModule /> },
-      { path: 'procurement', element: <ProcurementModule /> },
-      { path: 'procurement/orders', element: <ProcurementOrdersView /> },
-      { path: 'procurement/suppliers', element: <ProcurementSuppliersView /> },
-      { path: 'procurement/receive', element: <ProcurementReceiveView /> },
-      { path: 'inventory', element: <InventoryModule /> },
-      { path: 'inventory/raw-materials', element: <InventoryRawMaterialsView /> },
-      { path: 'inventory/finished-goods', element: <InventoryFinishedGoodsView /> },
-      { path: 'inventory/movements', element: <InventoryMovementsView /> },
-      { path: 'production', element: <ProductionModule /> },
-      { path: 'production/orders', element: <ProductionOrdersView /> },
-      { path: 'production/queue', element: <ProductionQueueView /> },
-      { path: 'sales', element: <SalesModule /> },
-      { path: 'sales/orders', element: <SalesOrdersView /> },
-      { path: 'sales/payments', element: <SalesPaymentsView /> },
-      { path: 'customer', element: <CustomerModule /> },
-      { path: 'customer/list', element: <CustomerListView /> },
-      { path: 'customer/new', element: <CustomerNewView /> },
-      { path: 'device', element: <DeviceModule /> },
-      { path: 'device/active', element: <ActiveDevicesTable /> },
-      { path: 'device/telemetry', element: <DeviceTelemetryView /> },
+      { index: true, element: <Navigate to="home" replace /> },
+      { path: 'home', element: <HomeModule /> },
+      { path: 'procurement', element:<AdminLayout><ProcurementModule /></AdminLayout> },
+      { path: 'procurement/orders', element: <AdminLayout><ProcurementOrdersView /></AdminLayout> },
+      { path: 'procurement/suppliers', element: <AdminLayout><ProcurementSuppliersView /></AdminLayout> },
+      { path: 'procurement/receive', element: <AdminLayout><ProcurementReceiveView /></AdminLayout> },
+      { path: 'inventory', element: <AdminLayout><InventoryModule /></AdminLayout> },
+      { path: 'inventory/raw-materials', element: <AdminLayout><InventoryRawMaterialsView /></AdminLayout> },
+      { path: 'inventory/finished-goods', element: <AdminLayout><InventoryFinishedGoodsView /></AdminLayout> },
+      { path: 'inventory/movements', element: <AdminLayout><InventoryMovementsView /></AdminLayout> },
+      { path: 'production', element: <AdminLayout><ProductionModule /></AdminLayout> },
+      { path: 'production/orders', element: <AdminLayout><ProductionOrdersView /></AdminLayout> },
+      { path: 'production/queue', element: <AdminLayout><ProductionQueueView /></AdminLayout> },
+      { path: 'sales', element: <AdminLayout><SalesModule /></AdminLayout> },
+      { path: 'sales/orders', element: <AdminLayout><SalesOrdersView /></AdminLayout> },
+      { path: 'sales/payments', element: <AdminLayout><SalesPaymentsView /></AdminLayout> },
+      { path: 'customer', element: <AdminLayout><CustomerModule /></AdminLayout> },
+      { path: 'customer/list', element: <AdminLayout><CustomerListView /></AdminLayout> },
+      { path: 'customer/new', element: <AdminLayout><CustomerNewView /></AdminLayout> },
+      { path: 'device', element: <AdminLayout><DeviceModule /></AdminLayout> },
+      { path: 'device/active', element: <AdminLayout><ActiveDevicesTable /></AdminLayout> },
+      { path: 'device/telemetry/:userId', element: <DeviceTelemetryView /> },
       { path: 'settings', element: <SettingsModule /> },
     ],
   },

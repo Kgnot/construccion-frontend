@@ -31,9 +31,8 @@ export function ActiveDevicesTable() {
   };
 
 
-  // Se utiliza el state para no mostrar el dato en la URL, por seguridad y limpieza.
-  const handleClick = (userId: string, deviceType: string) => {
-    navigate('/device/telemetry', { state: { userId, deviceType } });
+  const handleClick = (userId: string) => {
+    navigate(`/device/telemetry/${userId}`);
   };
 
 
@@ -70,7 +69,7 @@ export function ActiveDevicesTable() {
                 </span>
               </td>
               <td className="col_action">
-                <button className="btn_detail" onClick={() => handleClick(device.userId, device.deviceType)}>
+                <button className="btn_detail" onClick={() => handleClick(device.userId)}>
                   Ver detalle
                 </button>
               </td>

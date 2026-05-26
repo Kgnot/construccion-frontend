@@ -8,6 +8,7 @@ interface TelemetryWidgetPanelProps {
   toggleWidget?: (widget: string) => void;
   backTo?: string;
   userId?: string;
+  disabled?: boolean;
   children?: React.ReactNode;
 }
 
@@ -19,11 +20,13 @@ export const TelemetryWidgetPanel = ({
   toggleWidget,
   backTo,
   userId,
+  disabled,
   children,
 }: TelemetryWidgetPanelProps) => {
   const navigate = useNavigate();
   const handleWidgetClick = (widgetKey: string) => {
-    if (toggleWidget) toggleWidget(widgetKey);
+    if (disabled || !toggleWidget) return;
+    toggleWidget(widgetKey);
   };
 
   return (
@@ -37,6 +40,11 @@ export const TelemetryWidgetPanel = ({
             Dispositivo: {userId}
           </span>
         )}
+        {disabled && (
+          <span className="telemetry_deactivated_badge">
+            Dispositivo desactivado
+          </span>
+        )}
         {backTo && (
           <button className="btn_back_active" onClick={() => navigate(backTo)}>
             ← Dispositivos activos
@@ -48,7 +56,7 @@ export const TelemetryWidgetPanel = ({
           <div className="feature_module__widgets">
             {widgets.map((widget) => (
               <article
-                className={`main-box__card ${selectedWidgets.includes(widget.key) ? 'selected' : ''}`}
+                className={`main-box__card ${selectedWidgets.includes(widget.key) ? 'selected' : ''} ${disabled ? 'is-disabled' : ''}`}
                 key={widget.key}
                 onClick={() => handleWidgetClick(widget.key)}
               >
