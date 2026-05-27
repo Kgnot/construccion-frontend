@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { login } from '../../shared/lib/customerService';
 import './LoginView.css';
+import { useNavigate } from 'react-router';
+import { useApp } from '../../app/providers/AuthProvider';
 
 export function LoginView() {
   const [email, setEmail] = useState('');
@@ -8,7 +10,9 @@ export function LoginView() {
   const [isLoading, setIsLoading] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [showDocument, setShowDocument] = useState(false);
-
+  const navigate = useNavigate();
+  const { setUser, setIsAdmin, setIsAuthenticated } = useApp();
+  
   const showToast = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
     (window as any).showToast?.(message, type, 4000);
   };
@@ -30,7 +34,12 @@ export function LoginView() {
       });
 
       if (result) {
+        setUser(result);
+        setIsAdmin(result.email === 'admin@gmail.com');
+        setIsAuthenticated(true);
+        console.log(result.email === 'admin@gmail.com');
         showToast(`¡Bienvenido ${result.firstName}!`, 'success');
+        navigate('/home');
         // Aquí puedes redirigir al usuario o guardar los datos de sesión
         console.log('Login exitoso:', result);
         // localStorage.setItem('user', JSON.stringify(result));
@@ -169,7 +178,7 @@ export function LoginView() {
           </p>
         </div>
 
-        <p className="login-legal">© 2025 MediBug · Todos los derechos reservados</p>
+        <p className="login-legal">© 2026 MediBug · Todos los derechos reservados</p>
       </div>
     </div>
   );
