@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import './InventoryFinishedGoodsView.css';
-import { getAllProducts } from '../../../shared/lib/inventoryService';
+import { getAllProducts, activateProduct, deactivateProduct } from '../../../shared/lib/inventoryService';
 import type { Product as ApiProduct } from '../../../shared/lib/inventoryService';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -35,7 +35,7 @@ function useGridColumns() {
 
 // ── Toggle component ──────────────────────────────────────────────────────────
 
-const DeviceToggle = ({ status, onToggle }: { status: string; onToggle: () => void }) => {
+const DeviceToggle = ({ status, onToggle, disabled }: { status: string; onToggle: () => void; disabled?: boolean }) => {
   const isOn = status === 'ACTIVE';
   return (
     <button
@@ -43,6 +43,7 @@ const DeviceToggle = ({ status, onToggle }: { status: string; onToggle: () => vo
       onClick={onToggle}
       title={isOn ? 'Desactivar dispositivo' : 'Activar dispositivo'}
       aria-pressed={isOn}
+      disabled={disabled}
     >
       <span className="fg__toggle-thumb" />
     </button>
@@ -51,7 +52,7 @@ const DeviceToggle = ({ status, onToggle }: { status: string; onToggle: () => vo
 
 // ── Confirm Modal ─────────────────────────────────────────────────────────────
 
-const ConfirmModal = ({ productName, onCancel }: { productName: string; onCancel: () => void }) => (
+const ConfirmModal = ({ productName, onCancel, onConfirm, loading }: { productName: string; onCancel: () => void; onConfirm: () => void; loading?: boolean }) => (
   <div className="fg__modal-backdrop">
     <div className="fg__modal">
       <h3 className="fg__modal-title">¿Desactivar dispositivo?</h3>
@@ -60,11 +61,11 @@ const ConfirmModal = ({ productName, onCancel }: { productName: string; onCancel
         Esta acción detendrá su monitoreo activo.
       </p>
       <div className="fg__modal-actions">
-        <button className="fg__modal-btn fg__modal-btn--cancel" onClick={onCancel}>
+        <button className="fg__modal-btn fg__modal-btn--cancel" onClick={onCancel} disabled={!!loading}>
           Cancelar
         </button>
-        <button className="fg__modal-btn fg__modal-btn--confirm" onClick={onCancel}>
-          Sí, desactivar
+        <button className="fg__modal-btn fg__modal-btn--confirm" onClick={onConfirm} disabled={!!loading}>
+          {loading ? 'Desactivando…' : 'Sí, desactivar'}
         </button>
       </div>
     </div>
@@ -196,26 +197,27 @@ export const InventoryFinishedGoodsView = () => {
   const [viewMode, setViewMode]       = useState<ViewMode>('grid');
   const [page, setPage]               = useState(1);
   const [confirmProduct, setConfirm]  = useState<{ id: string; name: string } | null>(null);
+  const [actionLoading, setActionLoading] = useState(false);
   const { ref: gridRef, cols }        = useGridColumns();
 
   // Cargar productos del API
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await getAllProducts();
-        setProducts(data);
-      } catch (err) {
-        console.error('Failed to load products:', err);
-        setError('No se pudieron cargar los productos. Verifica que el servidor esté corriendo.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadProducts();
+  const loadProducts = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getAllProducts();
+      setProducts(data);
+    } catch (err) {
+      console.error('Failed to load products:', err);
+      setError('No se pudieron cargar los productos. Verifica que el servidor esté corriendo.');
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
 
   const PAGE_SIZE = cols * 2;
 
@@ -237,12 +239,42 @@ export const InventoryFinishedGoodsView = () => {
 
   const handleSearch = (v: string) => { setSearch(v); setPage(1); };
 
-  const handleToggle = (p: { id: string; name: string; status: string }) => {
+  const handleToggle = async (p: { id: string; name: string; status: string }) => {
     const isOn = p.status === 'ACTIVE';
     if (isOn) {
       setConfirm({ id: p.id, name: p.name });
+      return;
     }
-    // Si está apagado, aquí iría la lógica de activar (sin implementar)
+
+    // Activar
+    try {
+      setActionLoading(true);
+      setError(null);
+      await activateProduct(p.id);
+      // Refrescar lista
+      await loadProducts();
+    } catch (err) {
+      console.error('Failed to activate product:', err);
+      setError('No se pudo activar el producto. Intenta nuevamente.');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const confirmDeactivate = async () => {
+    if (!confirmProduct) return;
+    try {
+      setActionLoading(true);
+      setError(null);
+      await deactivateProduct(confirmProduct.id);
+      setConfirm(null);
+      await loadProducts();
+    } catch (err) {
+      console.error('Failed to deactivate product:', err);
+      setError('No se pudo desactivar el producto. Intenta nuevamente.');
+    } finally {
+      setActionLoading(false);
+    }
   };
 
   return (
@@ -253,6 +285,8 @@ export const InventoryFinishedGoodsView = () => {
         <ConfirmModal
           productName={confirmProduct.name}
           onCancel={() => setConfirm(null)}
+          onConfirm={confirmDeactivate}
+          loading={actionLoading}
         />
       )}
 
@@ -332,7 +366,7 @@ export const InventoryFinishedGoodsView = () => {
                     <article key={p.id} className="fg__card" data-status={p.status?.toLowerCase()}>
                       <div className="fg__card-top">
                         <h3 className="fg__card-name">{p.name}</h3>
-                        <DeviceToggle status={p.status} onToggle={() => handleToggle(p)} />
+                        <DeviceToggle status={p.status} onToggle={() => handleToggle(p)} disabled={actionLoading} />
                       </div>
                       <StatusBadge status={p.status} />
                       <p className="fg__card-desc">{p.description}</p>
@@ -391,7 +425,7 @@ export const InventoryFinishedGoodsView = () => {
                         <td className="fg__td-mono">{p.model}</td>
                         <td>{p.manufacturer}</td>
                         <td className="fg__td-num">{p.interval ? `${p.interval} ms` : '—'}</td>
-                        <td><DeviceToggle status={p.status} onToggle={() => handleToggle(p)} /></td>
+                        <td><DeviceToggle status={p.status} onToggle={() => handleToggle(p)} disabled={actionLoading} /></td>
                       </tr>
                     ))
                 }

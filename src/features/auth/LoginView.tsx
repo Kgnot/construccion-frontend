@@ -95,7 +95,7 @@ export function LoginView() {
             {/* Número de documento */}
             <div className={`login-form__field ${focusedField === 'documentNumber' ? 'is-focused' : ''}`}>
               <label htmlFor="login-document" className="login-form__label">
-                Número de documento
+                Contraseña
               </label>
               <div className="login-form__input-wrap">
                 <span className="login-form__icon">
