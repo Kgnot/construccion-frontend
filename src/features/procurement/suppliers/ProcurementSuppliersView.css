@@ -1,0 +1,639 @@
+/* ============================================================
+   ProcurementSuppliersView.css
+   Acabado visual alineado con customers y procurement.
+   Acento: #2d6bb0  (procurement-module --feature-accent)
+   ============================================================ */
+
+.psv {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+  min-height: 0;
+  --feature-accent: #2d6bb0;
+}
+
+.psv__banner {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  border: 1px solid transparent;
+}
+
+.psv__banner--error {
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.08);
+  color: #9b1c1c;
+}
+
+.psv__banner--success {
+  border-color: rgba(45, 107, 176, 0.22);
+  background: rgba(45, 107, 176, 0.08);
+  color: #244f81;
+}
+
+.psv__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.psv__search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+  max-width: 420px;
+}
+
+.psv__search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8ca1b8;
+  pointer-events: none;
+  display: flex;
+}
+
+.psv__search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.54rem 0.85rem 0.54rem 2.2rem;
+  border: 1px solid rgba(174, 190, 210, 0.7);
+  border-radius: 10px;
+  background: rgba(248, 251, 255, 0.88);
+  color: #213247;
+  font-family: var(--font-family);
+  font-size: 0.88rem;
+  font-weight: var(--font-regular);
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.psv__search::placeholder {
+  color: #9aafbf;
+}
+
+.psv__search:focus {
+  border-color: var(--feature-accent);
+  box-shadow: 0 0 0 3px rgba(45, 107, 176, 0.12);
+}
+
+.psv__actions,
+.psv__modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.psv__ghost-btn,
+.psv__primary-btn,
+.psv__row-btn,
+.psv__page-btn {
+  font-family: var(--font-family);
+}
+
+.psv__ghost-btn {
+  padding: 0.5rem 0.95rem;
+  border: 1px solid rgba(174, 190, 210, 0.6);
+  border-radius: 9px;
+  background: transparent;
+  color: #5f7085;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.psv__ghost-btn:hover:not(:disabled) {
+  background: rgba(45, 107, 176, 0.06);
+  color: #2a3c53;
+}
+
+.psv__primary-btn {
+  padding: 0.52rem 1rem;
+  border: 1px solid rgba(45, 107, 176, 0.45);
+  border-radius: 9px;
+  background: rgba(45, 107, 176, 0.14);
+  color: var(--feature-accent);
+  font-size: 0.85rem;
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.psv__primary-btn:hover:not(:disabled) {
+  background: rgba(45, 107, 176, 0.22);
+  border-color: rgba(45, 107, 176, 0.65);
+  color: #244f81;
+}
+
+.psv__primary-btn:disabled,
+.psv__ghost-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.psv__stats {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.psv__stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid rgba(190, 202, 218, 0.55);
+  border-radius: 10px;
+  background: rgba(248, 251, 255, 0.72);
+}
+
+.psv__stat-value {
+  font-size: 1.15rem;
+  font-weight: var(--font-semibold);
+  color: var(--feature-accent);
+  line-height: 1;
+}
+
+.psv__stat-label {
+  font-size: 0.78rem;
+  color: #7a93ab;
+  font-weight: var(--font-regular);
+}
+
+.psv__table-wrap {
+  overflow: auto;
+  border: 1px solid rgba(190, 202, 218, 0.55);
+  border-radius: 12px;
+  background: rgba(248, 251, 255, 0.72);
+  flex: 1;
+  min-height: 0;
+}
+
+.psv__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.psv__table thead tr {
+  border-bottom: 1px solid rgba(174, 190, 210, 0.5);
+}
+
+.psv__table th {
+  padding: 0.65rem 0.9rem;
+  text-align: left;
+  color: #6f849d;
+  font-weight: var(--font-semibold);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+}
+
+.psv__row {
+  border-bottom: 1px solid rgba(190, 202, 218, 0.3);
+  transition: background-color 0.14s ease;
+  cursor: pointer;
+}
+
+.psv__row:last-child {
+  border-bottom: none;
+}
+
+.psv__row:hover {
+  background: rgba(45, 107, 176, 0.04);
+}
+
+.psv__table td {
+  padding: 0.68rem 0.9rem;
+  color: #2d3f54;
+  vertical-align: middle;
+}
+
+.psv__name-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.psv__avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  background: rgba(45, 107, 176, 0.12);
+  color: var(--feature-accent);
+  font-size: 0.72rem;
+  font-weight: var(--font-semibold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.04em;
+}
+
+.psv__avatar--large {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+}
+
+.psv__name-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.psv__name {
+  font-weight: var(--font-medium);
+  color: #213247;
+}
+
+.psv__subname {
+  color: #7a93ab;
+  font-size: 0.8rem;
+}
+
+.psv__stacked {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+}
+
+.psv__contact-name {
+  font-weight: var(--font-medium);
+  color: #2d3f54;
+}
+
+.psv__muted {
+  color: #7a93ab;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.psv__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.18rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: var(--font-semibold);
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+.psv__badge--success {
+  background: rgba(45, 107, 176, 0.12);
+  color: var(--feature-accent);
+}
+
+.psv__badge--warning {
+  background: rgba(245, 158, 11, 0.12);
+  color: #8a5b05;
+}
+
+.psv__badge--danger {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b42318;
+}
+
+.psv__badge--neutral {
+  background: rgba(148, 163, 184, 0.12);
+  color: #5f7085;
+}
+
+.psv__actions-cell {
+  text-align: center;
+  white-space: nowrap;
+  min-width: 120px;
+}
+
+.psv__row-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.42rem 0.8rem;
+  border: 1px solid rgba(45, 107, 176, 0.4);
+  border-radius: 8px;
+  background: rgba(45, 107, 176, 0.06);
+  color: var(--feature-accent);
+  font-size: 0.82rem;
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.psv__row-btn:hover {
+  background: rgba(45, 107, 176, 0.12);
+  border-color: rgba(45, 107, 176, 0.55);
+  color: #244f81;
+}
+
+.psv__empty {
+  padding: 2.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  color: #9aafbf;
+}
+
+.psv__empty p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.psv__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.3rem;
+}
+
+.psv__pagination-info {
+  font-size: 0.8rem;
+  color: #8fa3b8;
+}
+
+.psv__pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.psv__page-btn {
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.45rem;
+  border: 1px solid rgba(174, 190, 210, 0.6);
+  border-radius: 7px;
+  background: transparent;
+  color: #5f7085;
+  font-size: 0.84rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.psv__page-btn:hover:not(:disabled):not(.is-current) {
+  background: rgba(45, 107, 176, 0.08);
+  color: var(--feature-accent);
+}
+
+.psv__page-btn.is-current {
+  background: rgba(45, 107, 176, 0.15);
+  border-color: rgba(45, 107, 176, 0.4);
+  color: var(--feature-accent);
+  font-weight: var(--font-semibold);
+  cursor: default;
+}
+
+.psv__page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.psv__page-ellipsis {
+  min-width: 1.5rem;
+  text-align: center;
+  color: #9aafbf;
+  font-size: 0.84rem;
+  line-height: 2rem;
+}
+
+.psv__modal.ui-modal {
+  width: min(920px, calc(100vw - 32px));
+  background: #f8fbff;
+}
+
+.psv__modal-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.35rem;
+}
+
+.psv__modal-shell--detail {
+  gap: 1rem;
+}
+
+.psv__modal-header,
+.psv__detail-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.psv__modal-eyebrow {
+  margin: 0 0 0.15rem;
+  font-size: 0.72rem;
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--feature-accent);
+}
+
+.psv__modal-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: var(--font-semibold);
+  color: #213247;
+}
+
+.psv__modal-subtitle {
+  margin: 0.2rem 0 0;
+  font-size: 0.85rem;
+  color: #6f849d;
+}
+
+.psv__modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(174, 190, 210, 0.6);
+  border-radius: 8px;
+  background: transparent;
+  color: #8fa3b8;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.psv__modal-close:hover {
+  background: rgba(45, 107, 176, 0.08);
+  color: var(--feature-accent);
+}
+
+.psv__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.psv__form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.psv__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.psv__field--wide {
+  grid-column: 1 / -1;
+}
+
+.psv__label {
+  font-size: 0.78rem;
+  font-weight: var(--font-semibold);
+  color: #6f849d;
+  letter-spacing: 0.03em;
+}
+
+.psv__req {
+  color: #b05a5a;
+}
+
+.psv__input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(174, 190, 210, 0.7);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #213247;
+  font-family: var(--font-family);
+  font-size: 0.88rem;
+  font-weight: var(--font-regular);
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.psv__input::placeholder {
+  color: #9aafbf;
+}
+
+.psv__input:focus {
+  border-color: var(--feature-accent);
+  box-shadow: 0 0 0 3px rgba(45, 107, 176, 0.1);
+}
+
+.psv__textarea {
+  resize: vertical;
+  min-height: 90px;
+  line-height: 1.5;
+}
+
+.psv__detail-hero {
+  align-items: center;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid rgba(190, 202, 218, 0.35);
+}
+
+.psv__detail-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.psv__detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.psv__detail-card {
+  border: 1px solid rgba(190, 202, 218, 0.55);
+  border-radius: 12px;
+  padding: 0.9rem;
+  background: rgba(248, 251, 255, 0.78);
+}
+
+.psv__detail-card--wide {
+  grid-column: 1 / -1;
+}
+
+.psv__detail-label {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  color: var(--feature-accent);
+  font-size: 0.72rem;
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.psv__detail-card strong,
+.psv__detail-card p {
+  display: block;
+  margin: 0;
+}
+
+.psv__detail-card strong {
+  color: #213247;
+  font-weight: var(--font-semibold);
+}
+
+.psv__detail-card p {
+  margin-top: 0.3rem;
+  color: #60758d;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.psv__modal-actions--detail {
+  padding-top: 0.25rem;
+}
+
+@media (max-width: 720px) {
+  .psv__table {
+    min-width: 900px;
+  }
+
+  .psv__modal.ui-modal {
+    width: min(920px, calc(100vw - 20px));
+  }
+
+  .psv__modal-shell {
+    padding: 1rem;
+  }
+
+  .psv__modal-header,
+  .psv__detail-hero {
+    flex-direction: column;
+  }
+
+  .psv__actions,
+  .psv__modal-actions {
+    width: 100%;
+    justify-content: stretch;
+    flex-wrap: wrap;
+  }
+
+  .psv__actions > button,
+  .psv__modal-actions > button {
+    flex: 1 1 150px;
+  }
+}
+
