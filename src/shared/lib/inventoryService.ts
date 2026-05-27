@@ -157,3 +157,56 @@ export function getDescriptionByDeviceType(deviceType: string): string {
   return descriptions[deviceType] || 'Dispositivo médico especializado';
 }
 
+/**
+ * Activa un producto (dispositivo) por id
+ */
+export async function activateProduct(id: string): Promise<void> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/products/${encodeURIComponent(id)}/activate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    const result: ApiResponse<void> = await response.json();
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to activate product');
+    }
+  } catch (error) {
+    console.error('Error activating product:', error);
+    throw error;
+  }
+}
+
+/**
+ * Desactiva un producto (dispositivo) por id
+ */
+export async function deactivateProduct(id: string): Promise<void> {
+  try {
+    // Backend expone POST /products/deactivate?id=... (controller expects @RequestParam)
+    const url = `${API_BASE_URL}/products/deactivate?id=${encodeURIComponent(id)}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    const result: ApiResponse<void> = await response.json();
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to deactivate product');
+    }
+  } catch (error) {
+    console.error('Error deactivating product:', error);
+    throw error;
+  }
+}
